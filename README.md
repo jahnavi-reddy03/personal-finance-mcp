@@ -121,16 +121,6 @@ personal-finance-mcp/
 ├── .env.example           ← copy this to .env, never commit .env
 └── requirements.txt
 ```
-
----
-
-## Built by
-
-**Jahnavi Reddy** — F-1 OPT, AI Engineer  
-[github.com/jahnavi-reddy03](https://github.com/jahnavi-reddy03)
-
-This is Project 2 of my AI engineering portfolio. Project 1 — a Security Threat Intelligence RAG system with 60% hallucination reduction — is live at [ai-security-rag.streamlit.app](https://ai-security-rag.streamlit.app).
-
 ---
 
 ## License
