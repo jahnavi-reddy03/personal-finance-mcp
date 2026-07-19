@@ -32,10 +32,14 @@ from tools.analyze import run as _analyze
 from tools.overspending import run as _overspending
 from tools.tips import run as _tips
 from tools.report import run as _report
+from tools.plaid_fetch import run as _plaid_fetch
 
 # Load API keys from .env
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+PLAID_CLIENT_ID = os.getenv("PLAID_CLIENT_ID")
+PLAID_SECRET = os.getenv("PLAID_SECRET")
+PLAID_ENV = os.getenv("PLAID_ENV", "sandbox")
 
 # ── MCP server ──────────────────────────────────────────────────────────────
 mcp = FastMCP(
@@ -99,6 +103,28 @@ def generate_report(data: str) -> str:
         data: JSON string produced by analyze_spending.
     """
     return _report(data, api_key=OPENAI_API_KEY)
+
+
+@mcp.tool()
+def fetch_bank_transactions(access_token: str, days: int = 30) -> str:
+    """
+    Pull real transactions from a connected bank account via Plaid and return
+    a spending breakdown in the same format as analyze_spending. Works with
+    Plaid Sandbox (test) and Production (real bank) accounts.
+
+    Args:
+        access_token: Plaid access token for the linked bank account.
+                      In sandbox, use the token from link_token flow with
+                      credentials user_good / pass_good.
+        days: Number of days of history to fetch (default 30).
+    """
+    return _plaid_fetch(
+        access_token=access_token,
+        plaid_client_id=PLAID_CLIENT_ID,
+        plaid_secret=PLAID_SECRET,
+        days=days,
+        environment=PLAID_ENV,
+    )
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
