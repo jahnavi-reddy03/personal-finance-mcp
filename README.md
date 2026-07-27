@@ -117,9 +117,12 @@ personal-finance-mcp/
 │   └── plaid_fetch.py     ← live bank data via Plaid
 ├── data/sample/
 │   └── transactions.csv   ← 30 realistic test transactions
+├── docs/
+│   └── demo.gif           ← screen recording of live tool usage
 ├── get_sandbox_token.py   ← one-time script to get Plaid sandbox token
 ├── .env.example           ← copy this to .env, never commit .env
-└── requirements.txt
+├── requirements.txt
+└── LICENSE
 ```
 
 ---
