@@ -33,6 +33,9 @@ from tools.overspending import run as _overspending
 from tools.tips import run as _tips
 from tools.report import run as _report
 from tools.plaid_fetch import run as _plaid_fetch
+from tools.predict_balance import run as _predict_balance
+from tools.spending_patterns import run as _spending_patterns
+from tools.savings_plan import run as _savings_plan
 
 # Load API keys from .env
 load_dotenv()
@@ -125,6 +128,48 @@ def fetch_bank_transactions(access_token: str, days: int = 30) -> str:
         days=days,
         environment=PLAID_ENV,
     )
+
+
+@mcp.tool()
+def predict_balance(data: str, months: int = 12, current_savings: float = 0.0) -> str:
+    """
+    Project your balance month-by-month based on current income and spending.
+    Returns a year-end forecast, savings rate, and plain-English verdict.
+
+    Args:
+        data:             JSON string from analyze_spending or fetch_bank_transactions.
+        months:           How many months to project forward (default 12).
+        current_savings:  Your current savings balance to build on (default 0).
+    """
+    return _predict_balance(data, months=months, current_savings=current_savings)
+
+
+@mcp.tool()
+def analyze_spending_patterns(csv_path: str) -> str:
+    """
+    Break spending into weekly buckets and surface patterns:
+    which weeks cost the most, which categories are trending up,
+    and any large one-off purchases that spike your budget.
+
+    Args:
+        csv_path: Absolute path to the transaction CSV file.
+                  Expected columns: date, description, amount.
+    """
+    return _spending_patterns(csv_path)
+
+
+@mcp.tool()
+def generate_savings_plan(data: str, target_monthly_savings: float = 500.0) -> str:
+    """
+    Generate a prioritized 3-month savings plan with specific cuts per category
+    and a projected outcome. Uses GPT-3.5 for personalized advice when available,
+    falls back to a rule-based plan otherwise.
+
+    Args:
+        data:                   JSON string from analyze_spending or fetch_bank_transactions.
+        target_monthly_savings: How much you want to save per month (default $500).
+    """
+    return _savings_plan(data, target_monthly_savings=target_monthly_savings, api_key=OPENAI_API_KEY)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
