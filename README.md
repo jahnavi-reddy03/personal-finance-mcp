@@ -24,7 +24,7 @@ Claude pulls your transactions, categorizes everything, compares it against the 
 
 ## What's under the hood
 
-Five tools that chain together:
+Eight tools that chain together:
 
 | Tool | What it actually does |
 |------|-----------------------|
@@ -33,6 +33,9 @@ Five tools that chain together:
 | `get_savings_tips` | Calls GPT-3.5 to generate 5 specific, actionable tips for whichever category is hurting you |
 | `generate_report` | Writes a plain-English monthly finance summary — highlights, red flags, and a one-line verdict |
 | `fetch_bank_transactions` | Connects to real bank accounts via Plaid and pulls live transactions — same output format, so all other tools work on it automatically |
+| `predict_balance` | Projects your balance month-by-month for up to 12 months — shows exactly where you'll land at year-end based on current income and spending |
+| `analyze_spending_patterns` | Breaks spending into weekly buckets, flags large one-off purchases, and surfaces which weeks cost the most |
+| `generate_savings_plan` | Uses GPT-3.5 to build a prioritized 3-month savings plan with specific cuts per category and a projected outcome |
 
 ---
 
@@ -108,13 +111,16 @@ python get_sandbox_token.py
 
 ```
 personal-finance-mcp/
-├── server.py              ← entry point, all 5 tools registered here
+├── server.py              ← entry point, all 8 tools registered here
 ├── tools/
 │   ├── analyze.py         ← CSV parsing + keyword categorization
 │   ├── overspending.py    ← 50/30/20 benchmark comparisons
 │   ├── tips.py            ← GPT-3.5 tips + static fallback
 │   ├── report.py          ← plain-English report generator
-│   └── plaid_fetch.py     ← live bank data via Plaid
+│   ├── plaid_fetch.py     ← live bank data via Plaid
+│   ├── predict_balance.py ← month-by-month balance projection
+│   ├── spending_patterns.py ← weekly pattern analysis + large purchases
+│   └── savings_plan.py    ← GPT-3.5 3-month savings plan
 ├── data/sample/
 │   └── transactions.csv   ← 30 realistic test transactions
 ├── docs/
