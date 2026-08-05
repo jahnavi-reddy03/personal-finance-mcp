@@ -77,7 +77,7 @@ cp .env.example .env
 }
 ```
 
-Restart Claude Desktop. The five tools load automatically — you'll see them in Settings → Developer → Local MCP Servers.
+Restart Claude Desktop. The eight tools load automatically — you'll see them in Settings → Developer → Local MCP Servers.
 
 ---
 
